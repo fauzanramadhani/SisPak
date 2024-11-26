@@ -11,12 +11,8 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.ndc.sispak.ui.theme.Inter
 
 @Composable
 fun BaseOutlinedTextField(
@@ -74,7 +70,7 @@ fun BaseOutlinedTextField(
         suffix = suffix,
         supportingText = supportingText,
         isError = isError,
-        visualTransformation =  visualTransformation,
+        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         maxLines = maxLines,

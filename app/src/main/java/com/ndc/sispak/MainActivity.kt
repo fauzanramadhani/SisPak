@@ -11,7 +11,6 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.ndc.sispak.ui.navigation.SetupNavHost
 import com.ndc.sispak.ui.theme.SisPakTheme
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

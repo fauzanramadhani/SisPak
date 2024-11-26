@@ -1,9 +1,7 @@
 package com.ndc.sispak.ui.feature.auth
 
 import android.app.Activity
-import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,9 +14,6 @@ import com.ndc.sispak.common.Either
 import com.ndc.sispak.ui.component.app_bar.BackStackAppBar
 import com.ndc.sispak.ui.feature.auth.screen.LoginScreen
 import com.ndc.sispak.ui.feature.auth.screen.RegisterScreen
-import com.ndc.sispak.ui.feature.splash.SplashEffect
-import com.ndc.sispak.ui.feature.splash.SplashState
-import com.ndc.sispak.ui.navigation.NavGraph
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -65,6 +60,7 @@ fun AuthScreen(
                 state = state,
                 action = action
             )
+
             1 -> RegisterScreen(
                 modifier = modifier,
                 paddingValues = paddingValues,

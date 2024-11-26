@@ -1,7 +1,6 @@
 package com.ndc.sispak.ui.feature.home
 
 import android.content.Context
-import android.util.Log
 import com.ndc.sispak.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,9 +26,9 @@ class HomeViewModel @Inject constructor(
             val newExpertSystemVisible = uiState.value.expertSystem
                 .toMutableList()
                 .filter { item ->
-                val title = context.getString(item.title)
-                title.contains(keyword, true)
-            }
+                    val title = context.getString(item.title)
+                    title.contains(keyword, true)
+                }
             updateState { copy(expertSystemVisible = newExpertSystemVisible) }
         }
     }

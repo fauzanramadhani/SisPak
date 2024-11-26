@@ -1,6 +1,5 @@
 package com.ndc.sispak.ui.feature.auth
 
-import android.util.Log
 import com.ndc.sispak.common.BaseViewModel
 import javax.inject.Inject
 
