@@ -4,4 +4,5 @@ sealed class NavGraph(val route: String) {
     data object ROOT : NavGraph(route = "ROOT")
     data object SplashScreen : NavGraph(route = "SPLASH_SCREEN")
     data object HomeScreen : NavGraph(route = "HOME_SCREEN")
+    data object AuthScreen : NavGraph(route = "AUTH_SCREEN")
 }

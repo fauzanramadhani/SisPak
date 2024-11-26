@@ -1,5 +1,7 @@
 package com.ndc.sispak.ui.feature.splash
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,30 +16,61 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ndc.sispak.R
+import com.ndc.sispak.common.Either
+import com.ndc.sispak.ui.navigation.NavGraph
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun SplashScreen(
-    navHostController: NavHostController
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController,
+    stateFlow: Flow<SplashState>,
+    effectFlow: Flow<Either<SplashEffect>>,
+    action: (SplashAction) -> Unit
 ) {
     val typography = MaterialTheme.typography
     val color = MaterialTheme.colorScheme
+    val ctx = LocalContext.current
+
+    val state by stateFlow.collectAsState(initial = SplashState())
+    val effect by effectFlow.collectAsState(initial = Either.left())
+
+    LaunchedEffect(key1 = effect) {
+        effect.onRight {
+            when (it) {
+                SplashEffect.NavigateToMain -> navHostController.navigate(
+                    NavGraph.AuthScreen.route
+                ) {
+                    launchSingleTop = true
+                }
+            }
+        }
+    }
+
+    BackHandler {
+        (ctx as Activity).finish()
+    }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(Color(0xFFC2DEEA), Color(0xFF0251D8)),
@@ -57,7 +90,7 @@ fun SplashScreen(
             )
 
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 86.dp),
@@ -85,8 +118,6 @@ fun SplashScreen(
                     color = color.onPrimary
                 )
             }
-
-
         }
     }
 }

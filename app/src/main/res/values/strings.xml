@@ -3,4 +3,31 @@
 
     <!--Content Description-->
     <string name="cd_logo">SisPak application logo</string>
+    <string name="cd_ic_arrow_right">Ikon panah ke kanan</string>
+    <string name="cd_ic_arrow_left">Ikon panah ke kanan</string>
+    <string name="cd_ic_method">Ikon Metode</string>
+    <string name="cd_ic_pencil">Ikon Pensil</string>
+    <string name="cd_illustration_empty_image">Illustrasi orang yang memandang kehampaan</string>
+    <!--Content Description-->
+
+    <!--Expert System List-->
+    <string name="forward_chaining_title">Forward Chaining</string>
+    <string name="forward_chaining_desc">Metode yang dimulai dari fakta yang diketahui dan menggunakan aturan untuk menarik kesimpulan.</string>
+
+    <string name="fuzzy_title">Logika Fuzzy</string>
+    <string name="fuzzy_desc">Metode yang menangani ketidakpastian dan ambiguitas dengan menggunakan derajat kebenaran antara 0 dan 1, bukan hanya benar atau salah (0 atau 1).</string>
+
+    <string name="backward_chaining_title">Backward Chaining</string>
+    <string name="backward_chaining_desc">metode yang dimulai dari tujuan atau hipotesis dan bekerja mundur untuk mencari fakta yang mendukungnya.</string>
+
+    <string name="bayesian_title">Bayesian Inference</string>
+    <string name="bayesian_desc">metode yang menggunakan teorema Bayes untuk memperbarui probabilitas suatu hipotesis berdasarkan bukti baru.</string>
+
+    <string name="certainty_title">Certainty Factor</string>
+    <string name="certainty_desc">Metode yang digunakan untuk mengukur tingkat keyakinan terhadap suatu keputusan atau kesimpulan berdasarkan informasi yang tersedia.</string>
+    <!--Expert System List-->
+
+    <string name="my_expert_system">Sistem Pakar Saya</string>
+    <string name="my_expert_system_description">Berikut daftar sistem pakar yang anda telah buat</string>
+    <string name="create">Buat</string>
 </resources>

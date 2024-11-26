@@ -11,7 +11,10 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.rememberNavController
 import com.ndc.sispak.ui.navigation.SetupNavHost
 import com.ndc.sispak.ui.theme.SisPakTheme
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +24,6 @@ class MainActivity : ComponentActivity() {
             var lightStatusBar by rememberSaveable {
                 mutableStateOf(true)
             }
-
             SisPakTheme(
                 lightStatusBars = lightStatusBar
             ) {
