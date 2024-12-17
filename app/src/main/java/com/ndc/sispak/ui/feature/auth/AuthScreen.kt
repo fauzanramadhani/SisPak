@@ -11,9 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.ndc.sispak.common.Either
+import com.ndc.sispak.common.MakeToast
 import com.ndc.sispak.ui.component.app_bar.BackStackAppBar
 import com.ndc.sispak.ui.feature.auth.screen.LoginScreen
+import com.ndc.sispak.ui.feature.auth.screen.PersonalizationScreen
 import com.ndc.sispak.ui.feature.auth.screen.RegisterScreen
+import com.ndc.sispak.ui.navigation.NavGraph
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -28,11 +31,16 @@ fun AuthScreen(
 
     val state by stateFlow.collectAsState(initial = AuthState())
     val effect by effectFlow.collectAsState(initial = Either.left())
+    val toast = MakeToast(ctx)
 
     LaunchedEffect(key1 = effect) {
         effect.onRight {
             when (it) {
-                else -> {}
+                AuthEffect.OnNavigateToDashboard -> navHostController.navigate(NavGraph.HomeScreen) {
+                    launchSingleTop = true
+                }
+
+                is AuthEffect.OnShowToast -> toast.short(it.message)
             }
         }
     }
@@ -62,6 +70,13 @@ fun AuthScreen(
             )
 
             1 -> RegisterScreen(
+                modifier = modifier,
+                paddingValues = paddingValues,
+                state = state,
+                action = action
+            )
+
+            2 -> PersonalizationScreen(
                 modifier = modifier,
                 paddingValues = paddingValues,
                 state = state,

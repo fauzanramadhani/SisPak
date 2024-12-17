@@ -22,10 +22,9 @@ fun SetupNavHost(
 
     NavHost(
         navController = navHostController,
-        startDestination = NavGraph.SplashScreen.route,
-        route = NavGraph.ROOT.route
+        startDestination = NavGraph.SplashScreen,
     ) {
-        composable(route = NavGraph.SplashScreen.route) {
+        composable<NavGraph.SplashScreen> {
             val viewModel = hiltViewModel<SplashViewModel>()
 
             SplashScreen(
@@ -36,7 +35,7 @@ fun SetupNavHost(
                 action = viewModel::invokeAction,
             )
         }
-        composable(route = NavGraph.AuthScreen.route) {
+        composable<NavGraph.AuthScreen>{
             val viewModel = hiltViewModel<AuthViewModel>()
 
             AuthScreen(
@@ -47,7 +46,7 @@ fun SetupNavHost(
                 action = viewModel::invokeAction
             )
         }
-        composable(route = NavGraph.HomeScreen.route) {
+        composable<NavGraph.HomeScreen> {
             onStatusBarChange(false)
             val viewModel = hiltViewModel<HomeViewModel>()
 

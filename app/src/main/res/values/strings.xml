@@ -1,13 +1,24 @@
 <resources>
     <string name="app_name">SisPak</string>
 
+    <!--ERROR-->
+    <string name="error_internal_server">Internal Server Error</string>
+    <string name="error_connection_timeout">Connection Timeout</string>
+    <string name="error_no_connection">No Connection / Connection Failure</string>
+    <string name="error_unknown">Unknown Error</string>
+    <string name="error_user_not_found">Pengguna tidak ditemukan</string>
+    <string name="error_authorization">Otorisasi gagal</string>
+    <!--ERROR-->
+
     <!--Content Description-->
     <string name="cd_logo">SisPak application logo</string>
     <string name="cd_ic_arrow_right">Ikon panah ke kanan</string>
     <string name="cd_ic_arrow_left">Ikon panah ke kanan</string>
     <string name="cd_ic_method">Ikon Metode</string>
     <string name="cd_ic_pencil">Ikon Pensil</string>
+    <string name="cd_ic_calendar">Ikon Kalender</string>
     <string name="cd_illustration_empty_image">Illustrasi orang yang memandang kehampaan</string>
+    <string name="cd_ic_refresh">Ikon muat ulang</string>
     <!--Content Description-->
 
     <!--Expert System List-->
@@ -30,4 +41,28 @@
     <string name="my_expert_system">Sistem Pakar Saya</string>
     <string name="my_expert_system_description">Berikut daftar sistem pakar yang anda telah buat</string>
     <string name="create">Buat</string>
+    <string name="login_to">Masuk ke&#160;</string>
+    <string name="email">Email</string>
+    <string name="fill_your_email">Masukan email kamu</string>
+    <string name="password">Password</string>
+    <string name="fill_your_password">Masukan password kamu</string>
+    <string name="forgot_password">Lupa password?</string>
+    <string name="register">Daftar</string>
+    <string name="login">Login</string>
+    <string name="OR">ATAU</string>
+    <string name="login_with_google">Masuk dengan google</string>
+    <string name="register_to">Daftar ke&#160;</string>
+    <string name="password_confirmation_is_incorrect">Konfirmasi password tidak sesuai</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="fill_your_password_again">Masukan password kamu lagi</string>
+    <string name="back">Kembali</string>
+    <string name="out">Keluar</string>
+    <string name="name">Nama</string>
+    <string name="fill_your_name">Masukan nama kamu</string>
+    <string name="dob">Tanggal Lahir</string>
+    <string name="fill_your_dob">Masukan tanggal lahir kamu</string>
+    <string name="select_date">Silahkan pilih tanggal</string>
+    <string name="select">Pilih</string>
+    <string name="save">Simpan</string>
+    <string name="reload">Muat ulang</string>
 </resources>

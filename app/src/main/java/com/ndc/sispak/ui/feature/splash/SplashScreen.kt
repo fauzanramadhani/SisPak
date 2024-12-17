@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ndc.sispak.R
 import com.ndc.sispak.common.Either
+import com.ndc.sispak.common.MakeToast
+import com.ndc.sispak.ui.component.button.OutlinedIconButton
 import com.ndc.sispak.ui.navigation.NavGraph
 import kotlinx.coroutines.flow.Flow
 
@@ -53,10 +58,26 @@ fun SplashScreen(
     LaunchedEffect(key1 = effect) {
         effect.onRight {
             when (it) {
-                SplashEffect.NavigateToMain -> navHostController.navigate(
-                    NavGraph.AuthScreen.route
+                SplashEffect.NavigateToHome -> navHostController.navigate(
+                    NavGraph.HomeScreen
                 ) {
                     launchSingleTop = true
+                }
+
+                SplashEffect.NavigateToAuth -> navHostController.navigate(
+                    NavGraph.AuthScreen(screen = 0)
+                ) {
+                    launchSingleTop = true
+                }
+
+                SplashEffect.NavigateToPersonalization -> navHostController.navigate(
+                    NavGraph.AuthScreen(screen = 2)
+                ) {
+                    launchSingleTop = true
+                }
+
+                is SplashEffect.OnError -> {
+                    MakeToast(ctx).short(it.message)
                 }
             }
         }
@@ -81,13 +102,31 @@ fun SplashScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = stringResource(id = R.string.cd_logo),
-                modifier = Modifier
-                    .width(162.dp)
-                    .align(Alignment.Center)
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = stringResource(id = R.string.cd_logo),
+                    modifier = Modifier
+                        .width(162.dp)
+                )
+                if (state.reloadIconVisibility)
+                    OutlinedIconButton(
+                        text = stringResource(id = R.string.reload),
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Rounded.Refresh,
+                                contentDescription = stringResource(id = R.string.cd_ic_refresh)
+                            )
+                        }
+                    ) {
+                        action(SplashAction.CheckAuthStatus)
+                    }
+
+            }
 
             Column(
                 modifier = modifier

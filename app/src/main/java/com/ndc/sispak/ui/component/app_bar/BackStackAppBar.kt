@@ -23,6 +23,7 @@ import com.ndc.sispak.R
 @Composable
 fun BackStackAppBar(
     modifier: Modifier = Modifier,
+    title: String = stringResource(id = R.string.back),
     onBackPressed: () -> Unit = {}
 ) {
     val color = MaterialTheme.colorScheme
@@ -48,7 +49,7 @@ fun BackStackAppBar(
                     .clickable(onClick = onBackPressed)
             )
             Text(
-                text = "Kembali",
+                text = title,
                 style = typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 color = color.onPrimary
             )

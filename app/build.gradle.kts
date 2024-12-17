@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.android.ksp)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.maps.secrets)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -40,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
@@ -76,5 +80,14 @@ dependencies {
     implementation (libs.navigation.hilt)
     // Ksp
     ksp(libs.hilt.compiler)
-
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.google.play.services.auth)
+    // Retrofit 2
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson.converter)
+    implementation(libs.okhttp.logging.interceptor)
+    // Kotlin serialization
+    implementation(libs.kotlinx.serialization.json)
 }

@@ -23,4 +23,9 @@ data class AuthState(
     val registerPasswordConfirmationValue: String = "",
     val registerPasswordConfirmationState: TextFieldState = TextFieldState.Empty,
     val registerPasswordConfirmationVisible: Boolean = false,
+    // Personalization Screen
+    val personalizationNameValue: String = "",
+    val personalizationNameState: TextFieldState = TextFieldState.Empty,
+    val personalizationDobValue: Long = 0,
+    val personalizationDobState: TextFieldState = TextFieldState.Empty
 )
