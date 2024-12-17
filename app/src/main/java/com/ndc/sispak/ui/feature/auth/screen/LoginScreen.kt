@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -86,7 +87,7 @@ fun LoginScreen(
                     )
             ) {
                 Text(
-                    text = "Masuk ke ",
+                    text = stringResource(id = R.string.login_to),
                     style = typography.titleLarge,
                     color = color.onBackground
                 )
@@ -108,7 +109,7 @@ fun LoginScreen(
                     .padding(horizontal = 12.dp)
             ) {
                 Text(
-                    text = "Email",
+                    text = stringResource(id = R.string.email),
                     style = typography.labelLarge,
                     color = color.onBackground
                 )
@@ -116,7 +117,7 @@ fun LoginScreen(
                     modifier = modifier
                         .fillMaxWidth(),
                     textFieldState = state.loginEmailState,
-                    placeholder = "Masukan email kamu",
+                    placeholder = stringResource(id = R.string.fill_your_email),
                     value = state.loginEmailValue,
                     onValueChange = {
                         action(AuthAction.OnLoginPasswordStateChange(TextFieldState.Empty))
@@ -145,7 +146,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .fillMaxWidth(),
                     textFieldState = state.loginPasswordState,
-                    placeholder = "Masukan password kamu",
+                    placeholder = stringResource(id = R.string.fill_your_password),
                     value = state.loginPasswordValue,
                     onValueChange = {
                         action(AuthAction.OnLoginPasswordValueChange(it))
@@ -166,7 +167,7 @@ fun LoginScreen(
                 )
             }
             Text(
-                text = "Lupa password?",
+                text = stringResource(id = R.string.forgot_password),
                 style = typography.labelLarge,
                 color = color.primary,
                 modifier = Modifier
@@ -179,14 +180,14 @@ fun LoginScreen(
                     .padding(horizontal = 12.dp)
             ) {
                 OutlinedButton(
-                    text = "Daftar",
+                    text = stringResource(id = R.string.register),
                     modifier = Modifier
                         .weight(1f)
                 ) {
                     action(AuthAction.OnScreenChange(1))
                 }
                 PrimaryButton(
-                    text = "Masuk",
+                    text = stringResource(id = R.string.login),
                     enabled = state.loginEmailValue.isNotEmpty() && state.loginEmailState !is TextFieldState.Error
                             && state.loginPasswordValue.isNotEmpty() && state.loginPasswordState !is TextFieldState.Error,
                     modifier = Modifier
@@ -205,7 +206,7 @@ fun LoginScreen(
                         .weight(1f)
                 )
                 Text(
-                    text = "ATAU",
+                    text = stringResource(id = R.string.OR),
                     style = typography.bodySmall,
                     color = color.onSurfaceVariant,
                     modifier = Modifier
@@ -220,7 +221,7 @@ fun LoginScreen(
             }
             OutlinedIconButton(
                 enabled = state.loginGoogleButtonEnabled,
-                text = "Masuk dengan google",
+                text = stringResource(id = R .string.login_with_google),
                 icon = {
                     Image(
                         painter = painterResource(id = R.drawable.ic_google),

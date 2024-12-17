@@ -55,8 +55,26 @@ sealed interface AuthAction {
         val visible: Boolean
     ) : AuthAction
     data object OnRegister : AuthAction
+
+    // Personalization
+    data class OnPersonalizationNameStateChange(
+        val state: TextFieldState
+    ) : AuthAction
+    data class OnPersonalizationNameValueChange(
+        val value: String
+    ) : AuthAction
+    data class OnPersonalizationDobValueChange(
+        val value: Long
+    ) : AuthAction
+    data class OnPersonalizationDobStateChange(
+        val state: TextFieldState
+    ) : AuthAction
+    data object OnSavePersonalization : AuthAction
 }
 
 sealed interface AuthEffect {
-
+    data class OnShowToast(
+        val message: String
+    ) : AuthEffect
+    data object OnNavigateToDashboard : AuthEffect
 }

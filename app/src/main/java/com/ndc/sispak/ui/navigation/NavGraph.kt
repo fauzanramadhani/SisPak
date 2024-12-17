@@ -1,8 +1,14 @@
 package com.ndc.sispak.ui.navigation
 
-sealed class NavGraph(val route: String) {
-    data object ROOT : NavGraph(route = "ROOT")
-    data object SplashScreen : NavGraph(route = "SPLASH_SCREEN")
-    data object HomeScreen : NavGraph(route = "HOME_SCREEN")
-    data object AuthScreen : NavGraph(route = "AUTH_SCREEN")
+import kotlinx.serialization.Serializable
+
+sealed interface NavGraph {
+    @Serializable
+    data object SplashScreen : NavGraph
+    @Serializable
+    data object HomeScreen : NavGraph
+    @Serializable
+    data class AuthScreen(
+        val screen: Int = 0
+    ) : NavGraph
 }

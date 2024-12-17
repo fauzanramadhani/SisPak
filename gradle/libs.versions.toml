@@ -12,6 +12,13 @@ navigationCompose = "2.8.1"
 hilt = "2.48"
 ksp = "1.9.0-1.0.13"
 navigation-hilt = "1.2.0"
+googleMapsSecret = "2.0.1"
+firebaseBom = "33.7.0"
+googlePlayServiceAuth = "21.3.0"
+googleService = "4.4.2"
+retrofit = "2.9.0"
+okhttpLoggingInterceptor = "4.11.0"
+kotlinxSerialization = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,10 +39,22 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hilt"}
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "hilt"}
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleService"}
+google-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "googlePlayServiceAuth" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-android-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-maps-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin",  version.ref = "googleMapsSecret"}
+google-services = { id = "com.google.gms.google-services", version.ref = "googleService" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
 

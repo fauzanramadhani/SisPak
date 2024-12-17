@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -48,7 +49,7 @@ fun RegisterScreen(
     val focusManager = LocalFocusManager.current
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color.background)
             .padding(paddingValues)
@@ -63,20 +64,20 @@ fun RegisterScreen(
             )
         }
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 12.dp, bottom = 88.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .padding(
                         start = 12.dp,
                     ),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = "Daftar ke ",
+                    text = stringResource(id = R.string.register_to),
                     style = typography.titleSmall.copy(fontWeight = FontWeight.Normal),
                     color = color.onBackground
                 )
@@ -95,20 +96,20 @@ fun RegisterScreen(
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
             ) {
                 Text(
-                    text = "Email",
+                    text = stringResource(id = R.string.email),
                     style = typography.labelLarge,
                     color = color.onBackground
                 )
                 PrimaryTextField(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(),
                     textFieldState = state.registerEmailState,
-                    placeholder = "Masukan email kamu",
+                    placeholder = stringResource(id = R.string.fill_your_email),
                     value = state.registerEmailValue,
                     onValueChange = {
                         action(AuthAction.OnRegisterEmailStateChange(TextFieldState.Empty))
@@ -124,20 +125,20 @@ fun RegisterScreen(
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
             ) {
                 Text(
-                    text = "Password",
+                    text = stringResource(id = R.string.password),
                     style = typography.labelLarge,
                     color = color.onBackground
                 )
                 PasswordTextField(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(),
                     textFieldState = state.registerPasswordState,
-                    placeholder = "Masukan password kamu",
+                    placeholder = stringResource(id = R.string.fill_your_password),
                     value = state.registerPasswordValue,
                     onValueChange = {
                         when {
@@ -146,7 +147,7 @@ fun RegisterScreen(
                                 action(AuthAction.OnRegisterPasswordStateChange(TextFieldState.Empty))
                                 action(
                                     AuthAction.OnRegisterPasswordConfirmationStateChange(
-                                        TextFieldState.Error("Konfirmasi password tidak sesuai")
+                                        TextFieldState.Error(ctx.getString(R.string.password_confirmation_is_incorrect))
                                     )
                                 )
                             }
@@ -173,27 +174,27 @@ fun RegisterScreen(
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
             ) {
                 Text(
-                    text = "Konfirmasi Password",
+                    text = stringResource(id = R.string.confirm_password),
                     style = typography.labelLarge,
                     color = color.onBackground
                 )
                 PasswordTextField(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxWidth(),
                     textFieldState = state.registerPasswordConfirmationState,
-                    placeholder = "Masukan password kamu lagi",
+                    placeholder = stringResource(id = R.string.fill_your_password_again),
                     value = state.registerPasswordConfirmationValue,
                     onValueChange = {
                         when {
                             it.isNotEmpty() && state.registerPasswordValue != it -> {
                                 action(
                                     AuthAction.OnRegisterPasswordConfirmationStateChange(
-                                        TextFieldState.Error("Konfirmasi password tidak sesuai")
+                                        TextFieldState.Error(ctx.getString(R.string.password_confirmation_is_incorrect))
                                     )
                                 )
                             }
@@ -224,19 +225,19 @@ fun RegisterScreen(
             }
         }
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp)
                 .align(Alignment.BottomCenter),
             contentAlignment = Alignment.Center,
         ) {
             PrimaryButton(
-                text = "Daftar",
+                text = stringResource(id = R.string.register),
                 enabled = !state.loadingState && state.registerEmailValue.isNotEmpty() && state.registerPasswordValue.isNotEmpty()
                         && state.registerPasswordConfirmationValue.isNotEmpty() && state.registerPasswordValue == state.registerPasswordConfirmationValue
                         && state.registerEmailState !is TextFieldState.Error && state.registerPasswordState !is TextFieldState.Error
                         && state.registerPasswordConfirmationState !is TextFieldState.Error,
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
             ) {
