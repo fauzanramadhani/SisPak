@@ -1,13 +1,11 @@
 package com.ndc.sispak.ui.feature.auth
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.ndc.sispak.common.BaseViewModel
-import com.ndc.sispak.domain.GetFirebaseUserUseCase
 import com.ndc.sispak.domain.HandleLoginWithGoogleUseCase
 import com.ndc.sispak.domain.LoginBasicUseCase
 import com.ndc.sispak.domain.LogoutUseCase
@@ -30,7 +28,6 @@ class AuthViewModel @Inject constructor(
 ) {
     init {
         val authParams = savedStateHandle.toRoute<NavGraph.AuthScreen>()
-        Log.e("params", authParams.screen.toString())
         updateState {
             copy(
                 screen = authParams.screen,
