@@ -8,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ndc.sispak.ui.feature.auth.AuthScreen
 import com.ndc.sispak.ui.feature.auth.AuthViewModel
+import com.ndc.sispak.ui.feature.create_system.CreateSystemScreen
+import com.ndc.sispak.ui.feature.create_system.CreateSystemViewModel
 import com.ndc.sispak.ui.feature.home.HomeScreen
 import com.ndc.sispak.ui.feature.home.HomeViewModel
 import com.ndc.sispak.ui.feature.splash.SplashScreen
@@ -51,6 +53,18 @@ fun SetupNavHost(
             val viewModel = hiltViewModel<HomeViewModel>()
 
             HomeScreen(
+                modifier = modifier,
+                navHostController = navHostController,
+                stateFlow = viewModel.uiState,
+                effectFlow = viewModel.onEffect,
+                action = viewModel::invokeAction
+            )
+        }
+        composable<NavGraph.CreateSystemScreen> {
+            onStatusBarChange(false)
+            val viewModel = hiltViewModel<CreateSystemViewModel>()
+
+            CreateSystemScreen(
                 modifier = modifier,
                 navHostController = navHostController,
                 stateFlow = viewModel.uiState,

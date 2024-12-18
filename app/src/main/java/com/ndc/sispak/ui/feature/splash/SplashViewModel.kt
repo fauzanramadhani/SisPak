@@ -8,6 +8,7 @@ import com.ndc.sispak.common.UiStatus
 import com.ndc.sispak.domain.GetFirebaseUserUseCase
 import com.ndc.sispak.domain.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class SplashViewModel @Inject constructor(
         val currentUserId = getFirebaseUserUseCase.invoke()?.uid
 
         if (currentUserId == null) {
+            delay(500)
             send(SplashEffect.NavigateToAuth)
         } else {
             getUserInfoUseCase.invoke()

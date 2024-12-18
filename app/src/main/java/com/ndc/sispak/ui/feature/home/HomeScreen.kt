@@ -1,5 +1,7 @@
 package com.ndc.sispak.ui.feature.home
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,11 +46,16 @@ fun HomeScreen(
     effectFlow: Flow<Either<HomeEffect>>,
     action: (HomeAction) -> Unit
 ) {
+    val ctx = LocalContext.current
     val typography = MaterialTheme.typography
     val color = MaterialTheme.colorScheme
 
     val state by stateFlow.collectAsState(initial = HomeState())
     val effect by effectFlow.collectAsState(initial = Either.left())
+
+    BackHandler {
+        (ctx as Activity).finish()
+    }
 
     Scaffold(
         modifier = modifier
@@ -91,7 +99,6 @@ fun HomeScreen(
                     PrimaryAppBar(
                         modifier = modifier
                             .padding(paddingValues.calculateTopPadding())
-                            .padding(vertical = 12.dp)
                     )
                     Column(
                         modifier = modifier.padding(horizontal = 12.dp, vertical = 24.dp)

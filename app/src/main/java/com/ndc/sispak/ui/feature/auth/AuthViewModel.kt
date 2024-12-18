@@ -1,17 +1,27 @@
 package com.ndc.sispak.ui.feature.auth
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.ndc.sispak.common.BaseViewModel
+import com.ndc.sispak.common.ErrorMessageHandler
+import com.ndc.sispak.common.UiStatus
+import com.ndc.sispak.domain.GetUserInfoUseCase
 import com.ndc.sispak.domain.HandleLoginWithGoogleUseCase
 import com.ndc.sispak.domain.LoginBasicUseCase
 import com.ndc.sispak.domain.LogoutUseCase
 import com.ndc.sispak.domain.RegisterUseCase
+import com.ndc.sispak.domain.ServiceAuthBasicUseCase
+import com.ndc.sispak.ui.feature.splash.SplashEffect
+import com.ndc.sispak.ui.feature.splash.SplashViewModel
 import com.ndc.sispak.ui.navigation.NavGraph
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +32,9 @@ class AuthViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase,
     private val googleSignInClient: GoogleSignInClient,
     private val logoutUseCase: LogoutUseCase,
+    private val serviceAuthBasicUseCase: ServiceAuthBasicUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val errorMessageHandler: ErrorMessageHandler,
     savedStateHandle: SavedStateHandle,
 ) : BaseViewModel<AuthState, AuthAction, AuthEffect>(
     AuthState()
@@ -104,8 +117,32 @@ class AuthViewModel @Inject constructor(
             updateState { copy(personalizationNameState = state) }
         }
         on(AuthAction.OnSavePersonalization::class.java) {
-            // TODO
+            savePersonalization()
         }
+        on(AuthAction.OnLogout::class.java) {
+            logout()
+        }
+    }
+
+    private fun savePersonalization() = viewModelScope.launch {
+        serviceAuthBasicUseCase.invoke(
+            name = uiState.value.personalizationNameValue,
+            dob = uiState.value.personalizationDobValue
+        ).onStart {
+            updateState { copy(loadingState = true) }
+        }.onEach {
+            updateState { copy(loadingState = false) }
+            when (it) {
+                is UiStatus.Error -> {
+                    val message = errorMessageHandler.fromCode(it.code)
+                    AuthEffect.OnShowToast(message)
+                    Log.e(AuthViewModel::class.simpleName, it.message)
+                }
+                is UiStatus.Success -> {
+                    sendEffect(AuthEffect.NavigateToHome)
+                }
+            }
+        }.collect()
     }
 
     private fun logout() = viewModelScope.launch {
@@ -116,8 +153,8 @@ class AuthViewModel @Inject constructor(
     private fun handleLoginWithGoogle(intent: Intent) = viewModelScope.launch {
         updateState { copy(loadingState = true) }
         try {
-            handleLoginWithGoogleUseCase.invoke(intent).addOnSuccessListener {
-                updateState { copy(screen = 2) }
+            handleLoginWithGoogleUseCase.invoke(intent).addOnSuccessListener { authRes ->
+                checkAuthStatus()
             }.addOnFailureListener { e ->
                 updateState { copy(loadingState = false) }
                 send(AuthEffect.OnShowToast(e.message.toString()))
@@ -133,13 +170,35 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    private fun checkAuthStatus() = viewModelScope.launch {
+        getUserInfoUseCase.invoke()
+            .onEach { uiStatus ->
+                when (uiStatus) {
+                    is UiStatus.Error -> {
+                        when (uiStatus.code) {
+                            461 -> updateState { copy(screen = 2) }
+
+                            else -> {
+                                val errorMessage = errorMessageHandler.fromCode(uiStatus.code)
+                                send(AuthEffect.OnShowToast(errorMessage))
+                                Log.e(SplashViewModel::class.simpleName, uiStatus.message)
+                            }
+                        }
+                    }
+
+                    is UiStatus.Success -> send(AuthEffect.NavigateToHome)
+                }
+            }
+            .collect()
+    }
+
     private fun loginBasic() = viewModelScope.launch {
         updateState { copy(loadingState = true) }
         loginBasicUseCase.invoke(
             uiState.value.loginEmailValue,
             uiState.value.loginPasswordValue
         ).addOnSuccessListener { _ ->
-            updateState { copy(screen = 2) }
+            checkAuthStatus()
         }.addOnFailureListener {
             send(AuthEffect.OnShowToast(it.message.toString()))
             updateState { copy(loadingState = false) }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -115,10 +116,15 @@ fun PersonalizationScreen(
                         action(AuthAction.OnPersonalizationNameValueChange(""))
                     },
                     keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next,
+                        imeAction = ImeAction.Done,
                         keyboardType = KeyboardType.Text,
                         capitalization = KeyboardCapitalization.Words
                     ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus(true)
+                        }
+                    )
                 )
             }
             Column(

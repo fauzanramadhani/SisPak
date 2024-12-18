@@ -60,18 +60,6 @@ class AuthRepository @Inject constructor(
         )
     }
 
-    fun serviceAuthWithGoogle(
-        name: String,
-        dob: Long
-    ): Flow<UiStatus<Unit>> = apiFlow {
-        authService.authWithGoogle(
-            uid = auth.currentUser?.uid ?: "",
-            email = auth.currentUser?.email ?: "",
-            name = name,
-            dob = dob
-        )
-    }
-
     fun logout() {
         auth.signOut()
         googleSignInClient.signOut()

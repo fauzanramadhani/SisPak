@@ -70,11 +70,12 @@ sealed interface AuthAction {
         val state: TextFieldState
     ) : AuthAction
     data object OnSavePersonalization : AuthAction
+    data object OnLogout : AuthAction
 }
 
 sealed interface AuthEffect {
     data class OnShowToast(
         val message: String
     ) : AuthEffect
-    data object OnNavigateToDashboard : AuthEffect
+    data object NavigateToHome : AuthEffect
 }

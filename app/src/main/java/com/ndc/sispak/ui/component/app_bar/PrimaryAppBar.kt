@@ -32,7 +32,6 @@ fun PrimaryAppBar(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
-
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo),

@@ -36,7 +36,7 @@ fun AuthScreen(
     LaunchedEffect(key1 = effect) {
         effect.onRight {
             when (it) {
-                AuthEffect.OnNavigateToDashboard -> navHostController.navigate(NavGraph.HomeScreen) {
+                AuthEffect.NavigateToHome -> navHostController.navigate(NavGraph.HomeScreen) {
                     launchSingleTop = true
                 }
 
@@ -56,6 +56,7 @@ fun AuthScreen(
                     onBackPressed = {
                         when (state.screen) {
                             1 -> action(AuthAction.OnScreenChange(0))
+                            2 -> action(AuthAction.OnLogout)
                         }
                     }
                 )
