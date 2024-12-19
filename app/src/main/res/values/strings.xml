@@ -19,6 +19,7 @@
     <string name="cd_ic_calendar">Ikon Kalender</string>
     <string name="cd_illustration_empty_image">Illustrasi orang yang memandang kehampaan</string>
     <string name="cd_ic_refresh">Ikon muat ulang</string>
+    <string name="cd_ic_add">Ikon menambahkan</string>
     <!--Content Description-->
 
     <!--Expert System List-->
@@ -65,4 +66,9 @@
     <string name="select">Pilih</string>
     <string name="save">Simpan</string>
     <string name="reload">Muat ulang</string>
+    <string name="main">Utama</string>
+    <string name="contribution">Kontribusi</string>
+    <string name="setting">Pengaturan</string>
+    <string name="empty_my_system">Ayo buat sistem pakar pertama anda!</string>
+    <string name="fill_code">Masukan kode</string>
 </resources>
