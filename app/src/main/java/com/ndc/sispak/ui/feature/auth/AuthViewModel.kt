@@ -15,7 +15,6 @@ import com.ndc.sispak.domain.LoginBasicUseCase
 import com.ndc.sispak.domain.LogoutUseCase
 import com.ndc.sispak.domain.RegisterUseCase
 import com.ndc.sispak.domain.ServiceAuthBasicUseCase
-import com.ndc.sispak.ui.feature.splash.SplashEffect
 import com.ndc.sispak.ui.feature.splash.SplashViewModel
 import com.ndc.sispak.ui.navigation.NavGraph
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -138,6 +137,7 @@ class AuthViewModel @Inject constructor(
                     AuthEffect.OnShowToast(message)
                     Log.e(AuthViewModel::class.simpleName, it.message)
                 }
+
                 is UiStatus.Success -> {
                     sendEffect(AuthEffect.NavigateToHome)
                 }
@@ -173,6 +173,7 @@ class AuthViewModel @Inject constructor(
     private fun checkAuthStatus() = viewModelScope.launch {
         getUserInfoUseCase.invoke()
             .onEach { uiStatus ->
+                updateState { copy(loadingState = false) }
                 when (uiStatus) {
                     is UiStatus.Error -> {
                         when (uiStatus.code) {
