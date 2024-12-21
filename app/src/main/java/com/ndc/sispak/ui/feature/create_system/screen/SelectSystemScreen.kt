@@ -17,7 +17,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -42,14 +45,25 @@ fun SelectSystemScreen(
 ) {
     val typography = MaterialTheme.typography
     val color = MaterialTheme.colorScheme
+    val pullToRefreshState = rememberPullToRefreshState()
 
     PullToRefreshBox(
         isRefreshing = state.loading,
         onRefresh = {
             action(CreateSystemAction.OnReload)
         },
-        modifier = modifier
-            .padding(paddingValues.calculateTopPadding())
+        state = pullToRefreshState,
+        indicator = {
+            Indicator(
+                modifier = modifier
+                    .padding(paddingValues.calculateTopPadding())
+                    .align(Alignment.TopCenter),
+                isRefreshing = state.loading,
+                state = pullToRefreshState,
+                containerColor = color.primaryContainer,
+                color = color.primary
+            )
+        }
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
