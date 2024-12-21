@@ -16,7 +16,6 @@ fun SearchTextField(
     value: String = "",
     onValueChange: (String) -> Unit = {},
 ) {
-    val typography = MaterialTheme.typography
     val color = MaterialTheme.colorScheme
 
     BaseOutlinedTextField(

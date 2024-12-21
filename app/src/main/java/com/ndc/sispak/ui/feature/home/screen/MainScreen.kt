@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.ndc.sispak.R
 import com.ndc.sispak.ui.component.app_bar.PrimaryAppBar
 import com.ndc.sispak.ui.component.card.MyExpertSystemCard
-import com.ndc.sispak.ui.component.empty.EmptyItem
+import com.ndc.sispak.ui.component.card.EmptyItem
 import com.ndc.sispak.ui.feature.home.HomeAction
 import com.ndc.sispak.ui.feature.home.HomeState
 
@@ -79,7 +79,7 @@ fun MainScreen(
                 EmptyItem(
                     modifier = modifier
                         .padding(top = 48.dp),
-                    message = "Ayo buat sistem pakar pertama anda!"
+                    message = stringResource(id = R.string.empty_my_system)
                 )
             }
         }

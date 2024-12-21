@@ -9,6 +9,7 @@ import com.google.firebase.auth.auth
 import com.ndc.sispak.BuildConfig
 import com.ndc.sispak.data.local.shared_pref.SharedPreferencesManager
 import com.ndc.sispak.data.remote.service.AuthService
+import com.ndc.sispak.data.remote.service.MethodService
 import com.ndc.sispak.data.remote.service.UserService
 import dagger.Module
 import dagger.Provides
@@ -86,5 +87,15 @@ object AppModule {
             .client(client)
             .build()
         return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    fun provideMethodService(client: OkHttpClient): MethodService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(MethodService::class.java)
     }
 }

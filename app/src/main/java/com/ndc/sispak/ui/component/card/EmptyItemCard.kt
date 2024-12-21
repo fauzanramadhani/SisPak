@@ -1,4 +1,4 @@
-package com.ndc.sispak.ui.component.empty
+package com.ndc.sispak.ui.component.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
