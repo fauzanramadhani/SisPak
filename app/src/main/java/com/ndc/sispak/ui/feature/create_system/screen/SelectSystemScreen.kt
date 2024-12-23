@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ndc.sispak.R
-import com.ndc.sispak.ui.component.card.EmptyItem
-import com.ndc.sispak.ui.component.card.ErrorItem
+import com.ndc.sispak.ui.component.card.EmptyItemCard
+import com.ndc.sispak.ui.component.card.ErrorItemCard
 import com.ndc.sispak.ui.component.card.SystemCard
 import com.ndc.sispak.ui.component.shimmer.shimmerBrush
 import com.ndc.sispak.ui.component.textfield.SearchTextField
@@ -120,7 +120,7 @@ fun SelectSystemScreen(
 
                 state.errorLoadMethod.isNotEmpty() -> {
                     item {
-                        ErrorItem(
+                        ErrorItemCard(
                             message = state.errorLoadMethod,
                             modifier = modifier
                                 .padding(horizontal = 12.dp)
@@ -129,7 +129,7 @@ fun SelectSystemScreen(
                 }
 
                 state.methodVisible.isEmpty() -> item {
-                    EmptyItem(message = stringResource(id = R.string.empty_method))
+                    EmptyItemCard(message = stringResource(id = R.string.empty_method))
                 }
 
                 else -> items(state.methodVisible) { item ->

@@ -1,6 +1,7 @@
 package com.ndc.sispak.ui.feature.home
 
 import com.ndc.sispak.R
+import com.ndc.sispak.data.remote.response.UserInfoResponse
 import com.ndc.sispak.ui.component.app_bar.BottomNavigationItem
 
 data class HomeState(
@@ -25,4 +26,7 @@ data class HomeState(
     val myExpertSystem: List<ExpertSystemDetail> = listOf(
         // TODO
     ),
+    val loadingSwipe: Boolean = false,
+    val loadingGetUserInfo: Boolean = true,
+    val userInfo: UserInfoResponse? = null
 )

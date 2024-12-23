@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.ndc.sispak.R
 
 @Composable
-fun ErrorItem(
+fun ErrorItemCard(
     modifier: Modifier = Modifier,
     message: String
 ) {

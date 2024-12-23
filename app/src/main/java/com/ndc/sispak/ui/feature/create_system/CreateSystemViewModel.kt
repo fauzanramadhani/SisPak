@@ -9,6 +9,7 @@ import com.ndc.sispak.common.UiStatus
 import com.ndc.sispak.domain.GetMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -36,6 +37,15 @@ class CreateSystemViewModel @Inject constructor(
         on(CreateSystemAction.OnReload::class.java) {
             getMethod()
         }
+        on(CreateSystemAction.OnBackButtonPressed::class.java) {
+            onBackButtonPressed()
+        }
+    }
+
+    private fun onBackButtonPressed() = viewModelScope.launch {
+        updateState { copy(backButtonEnabled = false) }
+        delay(1000)
+        updateState { copy(backButtonEnabled = true) }
     }
 
     private fun findExpertSystem(keyword: String) {

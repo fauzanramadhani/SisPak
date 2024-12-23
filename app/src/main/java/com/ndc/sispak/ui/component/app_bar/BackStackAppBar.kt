@@ -24,6 +24,7 @@ import com.ndc.sispak.R
 fun BackStackAppBar(
     modifier: Modifier = Modifier,
     title: String = stringResource(id = R.string.back),
+    enabled: Boolean = true,
     onBackPressed: () -> Unit = {}
 ) {
     val color = MaterialTheme.colorScheme
@@ -46,7 +47,7 @@ fun BackStackAppBar(
                 modifier = Modifier
                     .size(24.dp)
                     .clip(CircleShape)
-                    .clickable(onClick = onBackPressed)
+                    .clickable(onClick = onBackPressed, enabled = enabled)
             )
             Text(
                 text = title,

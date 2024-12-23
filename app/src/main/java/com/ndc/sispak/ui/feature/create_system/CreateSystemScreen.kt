@@ -5,6 +5,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
@@ -27,14 +28,19 @@ fun CreateSystemScreen(
 
     val state by stateFlow.collectAsState(initial = CreateSystemState())
     val effect by effectFlow.collectAsState(initial = Either.left())
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             BackStackAppBar(
+                enabled = state.backButtonEnabled,
                 onBackPressed = {
                     when (state.screen) {
-                        0 -> navHostController.navigateUp()
+                        0 -> {
+                            navHostController.navigateUp()
+                        }
                     }
+                    action(CreateSystemAction.OnBackButtonPressed)
                 }
             )
         }

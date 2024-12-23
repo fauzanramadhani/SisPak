@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.ndc.sispak.R
 import com.ndc.sispak.ui.component.app_bar.PrimaryAppBar
 import com.ndc.sispak.ui.component.card.MyExpertSystemCard
-import com.ndc.sispak.ui.component.card.EmptyItem
+import com.ndc.sispak.ui.component.card.EmptyItemCard
 import com.ndc.sispak.ui.feature.home.HomeAction
 import com.ndc.sispak.ui.feature.home.HomeState
 
@@ -37,7 +37,8 @@ fun MainScreen(
         item {
             PrimaryAppBar(
                 modifier = modifier
-                    .padding(paddingValues.calculateTopPadding())
+                    .padding(12.dp)
+                    .padding(bottom = 12.dp)
             )
         }
         if (state.myExpertSystem.isNotEmpty()) {
@@ -76,7 +77,7 @@ fun MainScreen(
             }
         } else {
             item {
-                EmptyItem(
+                EmptyItemCard(
                     modifier = modifier
                         .padding(top = 48.dp),
                     message = stringResource(id = R.string.empty_my_system)

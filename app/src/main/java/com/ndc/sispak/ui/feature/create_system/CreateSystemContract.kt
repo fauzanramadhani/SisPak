@@ -5,6 +5,8 @@ sealed interface CreateSystemAction {
         val value: String
     ) : CreateSystemAction
 
+    data object OnBackButtonPressed: CreateSystemAction
+
     data object OnReload : CreateSystemAction
 }
 

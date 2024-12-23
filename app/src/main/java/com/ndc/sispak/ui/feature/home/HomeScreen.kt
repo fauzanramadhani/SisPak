@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ndc.sispak.R
 import com.ndc.sispak.common.Either
+import com.ndc.sispak.common.MakeToast
 import com.ndc.sispak.ui.component.app_bar.BottomNavigationBar
 import com.ndc.sispak.ui.component.button.LabeledFab
 import com.ndc.sispak.ui.feature.home.screen.ContributionScreen
@@ -43,6 +45,17 @@ fun HomeScreen(
 
     val state by stateFlow.collectAsState(initial = HomeState())
     val effect by effectFlow.collectAsState(initial = Either.left())
+
+    LaunchedEffect(key1 = effect) {
+        effect.onRight {
+            when (it) {
+                is HomeEffect.OnShowToast -> MakeToast(ctx).short(it.message)
+                HomeEffect.OnLogout -> navHostController.navigate(NavGraph.AuthScreen(0)) {
+                    launchSingleTop = true
+                }
+            }
+        }
+    }
 
     BackHandler {
         (ctx as Activity).finish()

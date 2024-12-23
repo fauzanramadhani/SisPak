@@ -21,6 +21,10 @@
     <string name="cd_illustration_error_image">Illustrasi orang yang bingung dan kaget</string>
     <string name="cd_ic_refresh">Ikon muat ulang</string>
     <string name="cd_ic_add">Ikon menambahkan</string>
+    <string name="cd_ic_info">Ikon Informasi</string>
+    <string name="cd_ic_send">Ikon Mengirim</string>
+    <string name="cd_ic_world">Ikon Bahasa</string>
+    <string name="cd_ic_out">Ikon Keluar</string>
     <!--Content Description-->
 
     <!--Expert System List-->
@@ -75,4 +79,8 @@
     <string name="select_system">Pilih Metode</string>
     <string name="select_system_description">Silahkan pilih metode sistem pakar Anda</string>
     <string name="empty_method">Metode tidak di temukan atau belum tersedia</string>
+    <string name="terms_and_conditions">Syarat dan Ketentuan</string>
+    <string name="send_feedback">Kirim Masukan</string>
+    <!--TODO: Disesuaikan sesuai bahasa-->
+    <string name="language">Bahasa Indonesia</string>
 </resources>
