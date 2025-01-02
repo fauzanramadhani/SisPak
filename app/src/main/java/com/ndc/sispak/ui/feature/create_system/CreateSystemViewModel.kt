@@ -1,14 +1,13 @@
 package com.ndc.sispak.ui.feature.create_system
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.ndc.sispak.R
 import com.ndc.sispak.common.BaseViewModel
 import com.ndc.sispak.common.ErrorMessageHandler
 import com.ndc.sispak.common.UiStatus
 import com.ndc.sispak.domain.GetMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -18,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateSystemViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val getMethodUseCase: GetMethodUseCase,
     private val errorMessageHandler: ErrorMessageHandler
 ) : BaseViewModel<CreateSystemState, CreateSystemAction, CreateSystemEffect>(
@@ -40,9 +38,26 @@ class CreateSystemViewModel @Inject constructor(
         on(CreateSystemAction.OnBackButtonPressed::class.java) {
             onBackButtonPressed()
         }
+        on(CreateSystemAction.OnMethodSelected::class.java) {
+            updateState {
+                copy(
+                    screen = 1,
+                    bottomAppBarVisible = true,
+                    bottomAppBarTitle = R.string.next,
+                    selectedMethod = uiState.value.method.find { it.id == this@on.methodId }
+                )
+            }
+        }
     }
 
     private fun onBackButtonPressed() = viewModelScope.launch {
+        val currentScreen = uiState.value.screen
+        if (currentScreen != 0) {
+            updateState { copy(screen = currentScreen - 1) }
+        }
+        when (currentScreen) {
+            1 -> updateState { copy(bottomAppBarVisible = false) }
+        }
         updateState { copy(backButtonEnabled = false) }
         delay(1000)
         updateState { copy(backButtonEnabled = true) }

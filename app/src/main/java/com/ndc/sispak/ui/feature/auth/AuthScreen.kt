@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.ndc.sispak.common.Either
 import com.ndc.sispak.common.MakeToast
-import com.ndc.sispak.ui.component.app_bar.BackStackAppBar
+import com.ndc.sispak.ui.component.app_bar.TopSecondaryAppBar
 import com.ndc.sispak.ui.feature.auth.screen.LoginScreen
 import com.ndc.sispak.ui.feature.auth.screen.PersonalizationScreen
 import com.ndc.sispak.ui.feature.auth.screen.RegisterScreen
@@ -52,7 +52,7 @@ fun AuthScreen(
     Scaffold(
         topBar = {
             if (state.screen != 0)
-                BackStackAppBar(
+                TopSecondaryAppBar(
                     onBackPressed = {
                         when (state.screen) {
                             1 -> action(AuthAction.OnScreenChange(0))

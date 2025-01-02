@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -69,10 +68,10 @@ fun SelectSystemScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(
                 bottom = 24.dp,
-                top = paddingValues.calculateTopPadding() + 24.dp
+                top = 24.dp
             ),
             modifier = modifier
-                .navigationBarsPadding()
+                .padding(paddingValues)
         ) {
             item {
                 Column(
@@ -139,7 +138,7 @@ fun SelectSystemScreen(
                         title = item.title,
                         description = item.description,
                     ) {
-
+                        action(CreateSystemAction.OnMethodSelected(item.id))
                     }
                 }
             }

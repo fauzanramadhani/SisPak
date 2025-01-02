@@ -2,6 +2,8 @@ package com.ndc.sispak.ui.feature.home
 
 import android.app.Activity
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
@@ -15,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -116,6 +119,13 @@ fun HomeScreen(
             }
         }
     ) { paddingValues ->
+        Image(
+            painter = painterResource(id = R.drawable.bg_white),
+            contentScale = ContentScale.Crop,
+            contentDescription = "",
+            modifier = modifier
+                .fillMaxSize()
+        )
         when (state.screen) {
             0 -> MainScreen(
                 modifier = modifier,

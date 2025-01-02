@@ -19,6 +19,7 @@ googleService = "4.4.2"
 retrofit = "2.9.0"
 okhttpLoggingInterceptor = "4.11.0"
 kotlinxSerialization = "1.5.0"
+kotStep = "2.2.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -47,6 +48,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotstep = { group = "com.github.binayshaw7777", name = "KotStep", version.ref = "kotStep" }
 
 
 [plugins]

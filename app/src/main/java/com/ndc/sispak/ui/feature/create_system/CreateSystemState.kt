@@ -1,5 +1,6 @@
 package com.ndc.sispak.ui.feature.create_system
 
+import com.ndc.sispak.R
 import com.ndc.sispak.data.remote.response.MethodResponse
 
 data class CreateSystemState(
@@ -10,4 +11,7 @@ data class CreateSystemState(
     val searchValue: String = "",
     val method: List<MethodResponse> = listOf(),
     val methodVisible: List<MethodResponse> = listOf(),
+    val bottomAppBarVisible: Boolean = false,
+    val bottomAppBarTitle: Int = R.string.next,
+    val selectedMethod: MethodResponse? = null,
 )

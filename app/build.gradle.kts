@@ -90,4 +90,6 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     // Kotlin serialization
     implementation(libs.kotlinx.serialization.json)
+    // Stepper
+    implementation(libs.kotstep)
 }

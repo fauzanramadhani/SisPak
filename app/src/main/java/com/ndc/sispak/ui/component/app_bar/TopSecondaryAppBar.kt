@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.ndc.sispak.R
 
 @Composable
-fun BackStackAppBar(
+fun TopSecondaryAppBar(
     modifier: Modifier = Modifier,
     title: String = stringResource(id = R.string.back),
     enabled: Boolean = true,
@@ -36,6 +36,8 @@ fun BackStackAppBar(
     ) {
         Row(
             modifier = Modifier
+                .clip(RoundedCornerShape(24.dp))
+                .clickable(onClick = onBackPressed, enabled = enabled)
                 .padding(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -46,8 +48,6 @@ fun BackStackAppBar(
                 tint = color.onPrimary,
                 modifier = Modifier
                     .size(24.dp)
-                    .clip(CircleShape)
-                    .clickable(onClick = onBackPressed, enabled = enabled)
             )
             Text(
                 text = title,
