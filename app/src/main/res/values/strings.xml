@@ -84,4 +84,17 @@
     <string name="send_feedback">Kirim Masukan</string>
     <!--TODO: Disesuaikan sesuai bahasa-->
     <string name="language">Bahasa Indonesia</string>
+    <string name="what_is">Apa itu %s</string>
+    <string name="step_by_step">Langkah-langkah %s</string>
+    <string name="title">Judul</string>
+    <string name="summary">Ringkasan</string>
+    <string name="et_title_system_ph">Cth: Diagnosis Penyakit pada Bayi</string>
+    <string name="et_summary_system_ph">Cth: Sistem pakar menggunakan metode %s yang memproses fakta gejala fisik pasien.</string>
+    <string name="empty_system_title">Silahkan lengkapi nama sistem pakar anda</string>
+    <string name="what_is_symptom">Apa itu Gejala?</string>
+
+    <string name="symptom_description">Gejala adalah informasi atau fakta awal yang dapat diamati atau diketahui dari suatu kondisi. Gejala ini menjadi input awal dalam proses inferensi untuk menarik kesimpulan atau menghasilkan solusi.</string>
+    <string name="code">Kode</string>
+    <string name="symptom">Gejala</string>
+
 </resources>

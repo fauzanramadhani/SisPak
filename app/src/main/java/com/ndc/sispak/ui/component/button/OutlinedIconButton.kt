@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun OutlinedIconButton(
@@ -20,6 +22,12 @@ fun OutlinedIconButton(
     enabled: Boolean = true,
     text: String = "",
     icon: @Composable () -> Unit = {},
+    colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
+        containerColor = MaterialTheme.colorScheme.onPrimary,
+        contentColor = MaterialTheme.colorScheme.primary,
+        disabledContentColor = MaterialTheme.colorScheme.surfaceVariant
+    ),
+    borderColor: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit = {}
 ) {
     val color = MaterialTheme.colorScheme
@@ -29,14 +37,10 @@ fun OutlinedIconButton(
         modifier = modifier
             .height(48.dp),
         onClick = onClick,
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = color.onPrimary,
-            contentColor = color.primary,
-            disabledContentColor = color.surfaceVariant
-        ),
+        colors = colors,
         border = BorderStroke(
             width = 1.dp,
-            color = if (enabled) color.primary else color.surfaceVariant
+            color = if (enabled) borderColor else color.surfaceVariant
         ),
         shape = RoundedCornerShape(8.dp),
         enabled = enabled,

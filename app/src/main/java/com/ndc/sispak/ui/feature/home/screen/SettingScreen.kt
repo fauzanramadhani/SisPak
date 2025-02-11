@@ -53,7 +53,7 @@ fun SettingScreen(
     val pullToRefreshState = rememberPullToRefreshState()
 
     PullToRefreshBox(
-        isRefreshing = state.loadingSwipe,
+        isRefreshing = state.loadingSwipeProfile,
         onRefresh = {
             action(HomeAction.OnGetUserInfo)
         },
@@ -63,7 +63,7 @@ fun SettingScreen(
                 modifier = modifier
                     .padding(top = paddingValues.calculateTopPadding() + 86.dp)
                     .align(Alignment.TopCenter),
-                isRefreshing = state.loadingSwipe,
+                isRefreshing = state.loadingSwipeProfile,
                 state = pullToRefreshState,
                 containerColor = color.primaryContainer,
                 color = color.primary
@@ -82,6 +82,7 @@ fun SettingScreen(
                         .padding(12.dp)
                         .padding(bottom = 12.dp)
                 )
+                Spacer(modifier = modifier.padding(top = 12.dp))
             }
             item {
                 if (state.loadingGetUserInfo || state.userInfo == null) {

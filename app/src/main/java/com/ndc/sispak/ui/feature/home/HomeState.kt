@@ -1,6 +1,7 @@
 package com.ndc.sispak.ui.feature.home
 
 import com.ndc.sispak.R
+import com.ndc.sispak.data.remote.response.SystemResponse
 import com.ndc.sispak.data.remote.response.UserInfoResponse
 import com.ndc.sispak.ui.component.app_bar.BottomNavigationItem
 
@@ -23,10 +24,12 @@ data class HomeState(
         ),
     ),
     val screen: Int = 0,
-    val myExpertSystem: List<ExpertSystemDetail> = listOf(
-        // TODO
-    ),
-    val loadingSwipe: Boolean = false,
+    // Main Screen
+    val myExpertSystem: List<SystemResponse> = listOf(),
+    val loadingGetAllSystem: Boolean = true,
+    val loadingSwipeGetAllSystem: Boolean = false,
+    // Profile Screen
+    val loadingSwipeProfile: Boolean = false,
     val loadingGetUserInfo: Boolean = true,
     val userInfo: UserInfoResponse? = null
 )

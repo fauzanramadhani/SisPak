@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ndc.sispak.common.BaseViewModel
 import com.ndc.sispak.common.ErrorMessageHandler
 import com.ndc.sispak.common.UiStatus
+import com.ndc.sispak.domain.GetAllSystemUseCase
 import com.ndc.sispak.domain.GetUserInfoUseCase
 import com.ndc.sispak.domain.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,17 +22,24 @@ class HomeViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val errorMessageHandler: ErrorMessageHandler,
+    private val getAllSystemUseCase: GetAllSystemUseCase,
 ) : BaseViewModel<HomeState, HomeAction, HomeEffect>(
     HomeState()
 ) {
     init {
         getUserInfo()
+        getAllSystem()
     }
 
     override fun onAction() {
         on(HomeAction.OnSelectedScreenChange::class.java) {
             updateState { copy(screen = this@on.screen) }
         }
+        // Main Screen
+        on(HomeAction.OnGetAllSystem::class.java) {
+            getAllSystem()
+        }
+        // Setting Screen
         on(HomeAction.OnGetUserInfo::class.java) {
             getUserInfo()
         }
@@ -46,7 +55,7 @@ class HomeViewModel @Inject constructor(
                 updateState {
                     copy(
                         loadingGetUserInfo = true,
-                        loadingSwipe = true
+                        loadingSwipeProfile = true
                     )
                 }
             }
@@ -54,7 +63,7 @@ class HomeViewModel @Inject constructor(
                 when (it) {
                     is UiStatus.Error -> {
                         Log.e(HomeViewModel::class.simpleName, it.message)
-                        send(HomeEffect.OnShowToast(errorMessageHandler.fromCode(it.code)))
+                        showToast(errorMessageHandler.fromCode(it.code))
                     }
 
                     is UiStatus.Success -> updateState {
@@ -66,8 +75,45 @@ class HomeViewModel @Inject constructor(
                 }
             }
             .onCompletion {
-                updateState { copy(loadingSwipe = false) }
+                updateState { copy(loadingSwipeProfile = false) }
             }
             .collect()
     }
+
+    private fun getAllSystem() = viewModelScope.launch {
+        getAllSystemUseCase.invoke()
+            .onStart {
+                updateState {
+                    copy(
+                        loadingGetAllSystem = true,
+                        loadingSwipeGetAllSystem = true
+                    )
+                }
+            }.onEach { response ->
+                when (response) {
+                    is UiStatus.Error -> {
+                        Log.e(HomeViewModel::class.simpleName, response.message)
+                        showToast(errorMessageHandler.fromCode(response.code))
+                        throw Exception()
+                    }
+
+                    is UiStatus.Success -> updateState {
+                        val data = (response.data ?: listOf()).sortedByDescending { it.createdAt }
+                        copy(myExpertSystem = data)
+                    }
+                }
+            }
+            .retry()
+            .onCompletion {
+                updateState {
+                    copy(
+                        loadingGetAllSystem = false,
+                        loadingSwipeGetAllSystem = false
+                    )
+                }
+            }
+            .collect()
+    }
+
+    private fun showToast(message: String) = sendEffect(HomeEffect.OnShowToast(message))
 }

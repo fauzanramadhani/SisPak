@@ -11,6 +11,7 @@ import com.ndc.sispak.data.local.shared_pref.SharedPreferencesManager
 import com.ndc.sispak.data.remote.service.AuthService
 import com.ndc.sispak.data.remote.service.MethodService
 import com.ndc.sispak.data.remote.service.UserService
+import com.ndc.sispak.data.remote.service.system.SystemService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -97,5 +98,15 @@ object AppModule {
             .client(client)
             .build()
         return retrofit.create(MethodService::class.java)
+    }
+
+    @Provides
+    fun provideForwardChainingService(client: OkHttpClient): SystemService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(SystemService::class.java)
     }
 }

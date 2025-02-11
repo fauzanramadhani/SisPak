@@ -13,13 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.ndc.sispak.R
 import com.ndc.sispak.common.Either
+import com.ndc.sispak.common.MakeToast
 import com.ndc.sispak.ui.component.app_bar.BottomSecondaryAppBar
 import com.ndc.sispak.ui.component.app_bar.TopSecondaryAppBar
+import com.ndc.sispak.ui.feature.create_system.screen.CreateName
 import com.ndc.sispak.ui.feature.create_system.screen.DetailSystemScreen
 import com.ndc.sispak.ui.feature.create_system.screen.SelectSystemScreen
+import com.ndc.sispak.ui.navigation.NavGraph
 import kotlinx.coroutines.flow.Flow
 
 @Composable
@@ -39,6 +43,12 @@ fun CreateSystemScreen(
 
     LaunchedEffect(key1 = effect) {
         effect.onRight {
+            when (it) {
+                is CreateSystemEffect.OnShowToast -> MakeToast(ctx).short(it.message)
+                is CreateSystemEffect.OnSave -> when (it.methodId) {
+                    1 -> navHostController.navigate(NavGraph.ForwardChainingScreen(systemId = it.systemId))
+                }
+            }
         }
     }
 
@@ -47,31 +57,38 @@ fun CreateSystemScreen(
             0 -> {
                 navHostController.navigateUp()
             }
+            else -> action(CreateSystemAction.OnChangeScreen(state.screen - 1))
         }
-        action(CreateSystemAction.OnBackButtonPressed)
     }
 
     Scaffold(
         topBar = {
             TopSecondaryAppBar(
-                enabled = state.backButtonEnabled,
+                enabled = state.navigateButton,
                 onBackPressed = {
                     when (state.screen) {
                         0 -> {
                             navHostController.navigateUp()
                         }
+                        else -> action(CreateSystemAction.OnChangeScreen(state.screen - 1))
                     }
-                    action(CreateSystemAction.OnBackButtonPressed)
                 }
             )
         },
         bottomBar = {
             if (state.bottomAppBarVisible) {
                 BottomSecondaryAppBar(
-                    enabled = true,
+                    loading = state.loadingSaveName,
+                    title = when (state.screen) {
+                        2 -> stringResource(id = R.string.save)
+                        else -> stringResource(id = R.string.next)
+                    },
                     onNextPressed = {
-
-                    }
+                        when (state.screen) {
+                            1 -> action(CreateSystemAction.OnChangeScreen(2))
+                            2 -> action(CreateSystemAction.OnCreateNameSave)
+                        }
+                    },
                 )
             }
         }
@@ -92,6 +109,12 @@ fun CreateSystemScreen(
             )
 
             1 -> DetailSystemScreen(
+                modifier = modifier,
+                paddingValues = paddingValues,
+                state = state,
+                action = action
+            )
+            2 -> CreateName(
                 modifier = modifier,
                 paddingValues = paddingValues,
                 state = state,

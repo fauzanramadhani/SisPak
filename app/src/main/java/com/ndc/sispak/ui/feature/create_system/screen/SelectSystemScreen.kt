@@ -49,7 +49,7 @@ fun SelectSystemScreen(
     PullToRefreshBox(
         isRefreshing = state.loading,
         onRefresh = {
-            action(CreateSystemAction.OnReload)
+            action(CreateSystemAction.OnReloadMethod)
         },
         state = pullToRefreshState,
         indicator = {
@@ -136,7 +136,7 @@ fun SelectSystemScreen(
                         modifier = Modifier
                             .padding(horizontal = 12.dp),
                         title = item.title,
-                        description = item.description,
+                        description = item.summary,
                     ) {
                         action(CreateSystemAction.OnMethodSelected(item.id))
                     }

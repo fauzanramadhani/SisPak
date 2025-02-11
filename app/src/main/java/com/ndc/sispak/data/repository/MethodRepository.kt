@@ -8,4 +8,6 @@ class MethodRepository @Inject constructor(
     private val methodService: MethodService
 ) {
     suspend fun getMethod() = apiFlow { methodService.getMethod() }
+
+    suspend fun getMethodStep(methodId: Int) = apiFlow { methodService.getStep(methodId) }
 }

@@ -16,4 +16,11 @@ sealed interface NavGraph {
 
     @Serializable
     data object CreateSystemScreen : NavGraph
+
+    @Serializable
+    data class ForwardChainingScreen(
+        val screen: Int = 0,
+        val systemId: Int = 0
+    ) : NavGraph
+
 }

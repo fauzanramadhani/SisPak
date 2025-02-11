@@ -10,6 +10,8 @@ import com.ndc.sispak.ui.feature.auth.AuthScreen
 import com.ndc.sispak.ui.feature.auth.AuthViewModel
 import com.ndc.sispak.ui.feature.create_system.CreateSystemScreen
 import com.ndc.sispak.ui.feature.create_system.CreateSystemViewModel
+import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingScreen
+import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingViewModel
 import com.ndc.sispak.ui.feature.home.HomeScreen
 import com.ndc.sispak.ui.feature.home.HomeViewModel
 import com.ndc.sispak.ui.feature.splash.SplashScreen
@@ -24,7 +26,7 @@ fun SetupNavHost(
 
     NavHost(
         navController = navHostController,
-        startDestination = NavGraph.SplashScreen,
+        startDestination = NavGraph.ForwardChainingScreen(systemId = 7),
     ) {
         composable<NavGraph.SplashScreen> {
             val viewModel = hiltViewModel<SplashViewModel>()
@@ -70,6 +72,19 @@ fun SetupNavHost(
                 stateFlow = viewModel.uiState,
                 effectFlow = viewModel.onEffect,
                 action = viewModel::invokeAction
+            )
+        }
+
+        composable<NavGraph.ForwardChainingScreen>{
+            val viewModel = hiltViewModel<ForwardChainingViewModel>()
+
+            ForwardChainingScreen(
+                modifier = modifier,
+                navHostController = navHostController,
+                stateFlow = viewModel.uiState,
+                effectFlow = viewModel.onEffect,
+                action = viewModel::invokeAction,
+                symptomList = viewModel.symptoms
             )
         }
     }

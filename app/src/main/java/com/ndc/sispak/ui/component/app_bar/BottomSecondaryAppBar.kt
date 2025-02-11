@@ -5,11 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,7 +33,7 @@ import com.ndc.sispak.R
 fun BottomSecondaryAppBar(
     modifier: Modifier = Modifier,
     title: String = stringResource(id = R.string.next),
-    enabled: Boolean = true,
+    loading: Boolean = false,
     onNextPressed: () -> Unit = {}
 ) {
     val color = MaterialTheme.colorScheme
@@ -40,6 +43,7 @@ fun BottomSecondaryAppBar(
         modifier = modifier
             .navigationBarsPadding()
             .fillMaxWidth()
+            .height(48.dp)
             .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
             .background(
                 brush = Brush.linearGradient(
@@ -49,27 +53,39 @@ fun BottomSecondaryAppBar(
                 )
             ),
     ) {
-        Row(
-            modifier = Modifier
-                .clip(RoundedCornerShape(24.dp))
-                .clickable(onClick = onNextPressed, enabled = enabled)
-                .padding(12.dp)
-                .align(Alignment.CenterEnd),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = title,
-                style = typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = color.onPrimary
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_right),
-                contentDescription = stringResource(id = R.string.cd_ic_arrow_right),
-                tint = color.onPrimary,
+        if (loading) {
+            CircularProgressIndicator(
+                color = color.onPrimary,
+                strokeWidth = 3.dp,
                 modifier = Modifier
-                    .size(24.dp)
+                    .padding(end = 24.dp)
+                    .size(16.dp)
+                    .align(Alignment.CenterEnd),
             )
+        } else {
+            Row(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(24.dp))
+                    .fillMaxHeight()
+                    .clickable(onClick = onNextPressed)
+                    .padding(horizontal = 12.dp)
+                    .align(Alignment.CenterEnd),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    style = typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = color.onPrimary
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
+                    contentDescription = stringResource(id = R.string.cd_ic_arrow_right),
+                    tint = color.onPrimary,
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+            }
         }
     }
 }
