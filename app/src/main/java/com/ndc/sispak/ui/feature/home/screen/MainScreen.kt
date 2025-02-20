@@ -44,7 +44,6 @@ fun MainScreen(
     val typography = MaterialTheme.typography
     val color = MaterialTheme.colorScheme
     val pullToRefreshState = rememberPullToRefreshState()
-    val list = listOf("")
 
     PullToRefreshBox(
         isRefreshing = state.loadingSwipeGetAllSystem,

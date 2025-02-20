@@ -12,6 +12,7 @@ import com.ndc.sispak.data.remote.service.AuthService
 import com.ndc.sispak.data.remote.service.MethodService
 import com.ndc.sispak.data.remote.service.UserService
 import com.ndc.sispak.data.remote.service.system.SystemService
+import com.ndc.sispak.data.remote.service.system.forward_chaining.ForwardChainingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -101,12 +102,22 @@ object AppModule {
     }
 
     @Provides
-    fun provideForwardChainingService(client: OkHttpClient): SystemService {
+    fun provideService(client: OkHttpClient): SystemService {
         val retrofit = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
         return retrofit.create(SystemService::class.java)
+    }
+
+    @Provides
+    fun provideForwardChainingService(client: OkHttpClient): ForwardChainingService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        return retrofit.create(ForwardChainingService::class.java)
     }
 }

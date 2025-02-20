@@ -9,6 +9,7 @@ import com.ndc.sispak.domain.GetAllSystemUseCase
 import com.ndc.sispak.domain.GetUserInfoUseCase
 import com.ndc.sispak.domain.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -93,7 +94,7 @@ class HomeViewModel @Inject constructor(
                 when (response) {
                     is UiStatus.Error -> {
                         Log.e(HomeViewModel::class.simpleName, response.message)
-                        showToast(errorMessageHandler.fromCode(response.code))
+                        // showToast(errorMessageHandler.fromCode(response.code))
                         throw Exception()
                     }
 
@@ -103,7 +104,10 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
-            .retry()
+            .retry {
+                delay(1000)
+                true
+            }
             .onCompletion {
                 updateState {
                     copy(

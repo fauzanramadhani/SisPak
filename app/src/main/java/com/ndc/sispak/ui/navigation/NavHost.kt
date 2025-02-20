@@ -26,7 +26,7 @@ fun SetupNavHost(
 
     NavHost(
         navController = navHostController,
-        startDestination = NavGraph.ForwardChainingScreen(systemId = 7),
+        startDestination = NavGraph.ForwardChainingScreen(systemId = 8),
     ) {
         composable<NavGraph.SplashScreen> {
             val viewModel = hiltViewModel<SplashViewModel>()
@@ -84,7 +84,8 @@ fun SetupNavHost(
                 stateFlow = viewModel.uiState,
                 effectFlow = viewModel.onEffect,
                 action = viewModel::invokeAction,
-                symptomList = viewModel.symptoms
+                symptomList = viewModel.symptoms,
+                diseaseList = viewModel.disease
             )
         }
     }

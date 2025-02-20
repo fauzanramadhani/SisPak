@@ -30,3 +30,8 @@ class MakeToast(
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }
+
+fun Int.toTwoDigitString(): String {
+    return this.toString().padStart(2, '0')
+}
+

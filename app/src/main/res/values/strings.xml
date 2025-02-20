@@ -96,5 +96,6 @@
     <string name="symptom_description">Gejala adalah informasi atau fakta awal yang dapat diamati atau diketahui dari suatu kondisi. Gejala ini menjadi input awal dalam proses inferensi untuk menarik kesimpulan atau menghasilkan solusi.</string>
     <string name="code">Kode</string>
     <string name="symptom">Gejala</string>
+    <string name="example_placeholder">Cth: %s</string>
 
 </resources>

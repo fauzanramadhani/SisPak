@@ -17,9 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.ndc.sispak.R
 import com.ndc.sispak.common.Either
+import com.ndc.sispak.common.MakeToast
 import com.ndc.sispak.ui.component.app_bar.BottomSecondaryAppBar
 import com.ndc.sispak.ui.component.app_bar.TopSecondaryAppBar
 import com.ndc.sispak.ui.component.textfield.TextFieldState
+import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.screen.UpdateDiseaseScreen
 import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.screen.UpdateSymptomScreen
 import com.ndc.sispak.ui.navigation.NavGraph
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +33,8 @@ fun ForwardChainingScreen(
     stateFlow: Flow<ForwardChainingState>,
     effectFlow: Flow<Either<ForwardChainingEffect>>,
     action: (ForwardChainingAction) -> Unit,
-    symptomList: List<ForwardChainingInputState>
+    symptomList: List<ForwardChainingInputState>,
+    diseaseList: List<ForwardChainingInputState>
 ) {
     val ctx = LocalContext.current
     val typography = MaterialTheme.typography
@@ -40,7 +43,7 @@ fun ForwardChainingScreen(
     val state by stateFlow.collectAsState(initial = ForwardChainingState())
     val effect by effectFlow.collectAsState(initial = Either.left())
 
-    fun validateSymptoms(
+    fun validateSymptom(
     ): Boolean {
         var hasError = false
         val codeMap = mutableMapOf<String, MutableList<Int>>()
@@ -78,7 +81,59 @@ fun ForwardChainingScreen(
                 indices.forEach { index ->
                     action(
                         ForwardChainingAction.OnCodeSymptomStateChange(
-                            index, TextFieldState.Error("Kode gejala '${code.uppercase()}' sudah digunakan. Harap gunakan kode lain.")
+                            index,
+                            TextFieldState.Error("Kode gejala '${code.uppercase()}' sudah digunakan. Harap gunakan kode lain.")
+                        )
+                    )
+                }
+                hasError = true
+            }
+        }
+
+        return !hasError
+    }
+
+    fun validateDisease(
+    ): Boolean {
+        var hasError = false
+        val codeMap = mutableMapOf<String, MutableList<Int>>()
+
+        diseaseList.forEachIndexed { index, data ->
+            var isValid = true
+
+            if (data.code.isEmpty()) {
+                action(
+                    ForwardChainingAction.OnCodeDiseaseStateChange(
+                        index,
+                        TextFieldState.Error("Silahkan lengkapi kode penyakit pada field ini")
+                    )
+                )
+                isValid = false
+            }
+
+            if (data.value.isEmpty()) {
+                action(
+                    ForwardChainingAction.OnDiseaseStateChange(
+                        index, TextFieldState.Error("Silahkan lengkapi penyakit pada field ini")
+                    )
+                )
+                isValid = false
+            }
+
+            if (data.code.isNotEmpty()) {
+                codeMap.computeIfAbsent(data.code.lowercase()) { mutableListOf() }.add(index)
+            }
+
+            if (!isValid) hasError = true
+        }
+
+        codeMap.forEach { (code, indices) ->
+            if (indices.size > 1) {
+                indices.forEach { index ->
+                    action(
+                        ForwardChainingAction.OnCodeDiseaseStateChange(
+                            index,
+                            TextFieldState.Error("Kode penyakit '${code.uppercase()}' sudah digunakan. Harap gunakan kode lain.")
                         )
                     )
                 }
@@ -92,6 +147,9 @@ fun ForwardChainingScreen(
 
     LaunchedEffect(key1 = effect) {
         effect.onRight {
+            when (it) {
+                is ForwardChainingEffect.OnShowToast -> MakeToast(ctx).short(it.message)
+            }
         }
     }
 
@@ -124,8 +182,14 @@ fun ForwardChainingScreen(
                     onNextPressed = {
                         when (state.screen) {
                             0 -> {
-                                if (validateSymptoms()) {
+                                if (validateSymptom()) {
                                     action(ForwardChainingAction.OnSaveSymptom)
+                                }
+                            }
+
+                            1 -> {
+                                if (validateDisease()) {
+                                    action(ForwardChainingAction.OnSaveDisease)
                                 }
                             }
 
@@ -149,6 +213,14 @@ fun ForwardChainingScreen(
                 state = state,
                 action = action,
                 symptomList = symptomList
+            )
+
+            1 -> UpdateDiseaseScreen(
+                modifier = modifier,
+                paddingValues = paddingValues,
+                state = state,
+                action = action,
+                diseaseList = diseaseList
             )
         }
     }
