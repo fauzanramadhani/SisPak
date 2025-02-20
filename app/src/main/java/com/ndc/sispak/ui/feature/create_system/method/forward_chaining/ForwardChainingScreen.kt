@@ -166,7 +166,7 @@ fun ForwardChainingScreen(
                             navHostController.navigate(NavGraph.HomeScreen)
                         }
 
-                        1 -> action(ForwardChainingAction.OnChangeScreen(0))
+                        else -> action(ForwardChainingAction.OnChangeScreen(state.screen-1))
                     }
                 }
             )

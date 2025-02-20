@@ -8,8 +8,11 @@ import androidx.navigation.toRoute
 import com.ndc.sispak.common.BaseViewModel
 import com.ndc.sispak.common.ErrorMessageHandler
 import com.ndc.sispak.common.UiStatus
+import com.ndc.sispak.data.remote.body.forward_chaining.DiseaseBody
 import com.ndc.sispak.data.remote.body.forward_chaining.SymptomBody
+import com.ndc.sispak.domain.ForwardChainingGetDiseasesUseCase
 import com.ndc.sispak.domain.ForwardChainingGetSymptomsUseCase
+import com.ndc.sispak.domain.ForwardChainingUpdateDiseasesUseCase
 import com.ndc.sispak.domain.ForwardChainingUpdateSymptomsUseCase
 import com.ndc.sispak.ui.component.textfield.TextFieldState
 import com.ndc.sispak.ui.navigation.NavGraph
@@ -27,6 +30,8 @@ class ForwardChainingViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val forwardChainingGetSymptomsUseCase: ForwardChainingGetSymptomsUseCase,
     private val forwardChainingUpdateSymptomsUseCase: ForwardChainingUpdateSymptomsUseCase,
+    private val forwardChainingGetDiseasesUseCase: ForwardChainingGetDiseasesUseCase,
+    private val forwardChainingUpdateDiseasesUseCase: ForwardChainingUpdateDiseasesUseCase,
     private val errorMessageHandler: ErrorMessageHandler
 ) : BaseViewModel<ForwardChainingState, ForwardChainingAction, ForwardChainingEffect>(
     ForwardChainingState()
@@ -34,15 +39,17 @@ class ForwardChainingViewModel @Inject constructor(
     private val _symptoms = mutableStateListOf(ForwardChainingInputState())
     val symptoms: List<ForwardChainingInputState> get() = _symptoms
 
-    private val _disease = mutableStateListOf(ForwardChainingInputState())
-    val disease: List<ForwardChainingInputState> get() = _disease
+    private val _diseases = mutableStateListOf(ForwardChainingInputState())
+    val diseases: List<ForwardChainingInputState> get() = _diseases
 
     init {
         val authParams = savedStateHandle.toRoute<NavGraph.ForwardChainingScreen>()
         updateState {
             copy(systemId = authParams.systemId)
         }
-        getSymptoms()
+        if (uiState.value.screen == 0) {
+            getSymptoms()
+        }
     }
 
     override fun onAction() {
@@ -51,6 +58,7 @@ class ForwardChainingViewModel @Inject constructor(
         }
         // Symptom
         on(ForwardChainingAction.OnGetSymptoms::class.java) {
+            updateState { copy(loadingSwipeSymptoms = true) }
             getSymptoms()
         }
         on(ForwardChainingAction.OnCodeSymptomChange::class.java) {
@@ -86,44 +94,119 @@ class ForwardChainingViewModel @Inject constructor(
             _symptoms.removeAt(this@on.index)
         }
         on(ForwardChainingAction.OnSaveSymptom::class.java) {
-            addSymptoms()
+            updateSymptoms()
         }
         // Disease
+        on(ForwardChainingAction.OnGetDisease::class.java) {
+            updateState { copy(loadingSwipeDiseases = true) }
+            getDiseases()
+        }
         on(ForwardChainingAction.OnCodeDiseaseChange::class.java) {
-            val oldCode = disease[this@on.index].code
-            _disease[this@on.index] = disease[this@on.index].copy(
+            val oldCode = diseases[this@on.index].code
+            _diseases[this@on.index] = diseases[this@on.index].copy(
                 code = this@on.code,
                 stateCode = TextFieldState.Empty
             )
-            val duplicateIndices = disease.indices.filter { disease[it].code == oldCode }
+            val duplicateIndices = diseases.indices.filter { diseases[it].code == oldCode }
             if (duplicateIndices.size < 2) {
                 duplicateIndices.forEach {
-                    _disease[it] = disease[it].copy(stateCode = TextFieldState.Empty)
+                    _diseases[it] = diseases[it].copy(stateCode = TextFieldState.Empty)
                 }
             }
         }
         on(ForwardChainingAction.OnDiseaseChange::class.java) {
-            _disease[this@on.index] = disease[this@on.index].copy(value = this@on.value)
-            if (disease[this@on.index].stateValue is TextFieldState.Error) {
-                _disease[this@on.index] =
-                    disease[this@on.index].copy(stateValue = TextFieldState.Empty)
+            _diseases[this@on.index] = diseases[this@on.index].copy(value = this@on.value)
+            if (diseases[this@on.index].stateValue is TextFieldState.Error) {
+                _diseases[this@on.index] =
+                    diseases[this@on.index].copy(stateValue = TextFieldState.Empty)
             }
         }
         on(ForwardChainingAction.OnCodeDiseaseStateChange::class.java) {
-            _disease[this@on.index] = disease[this@on.index].copy(stateCode = this@on.state)
+            _diseases[this@on.index] = diseases[this@on.index].copy(stateCode = this@on.state)
         }
         on(ForwardChainingAction.OnDiseaseStateChange::class.java) {
-            _disease[this@on.index] = disease[this@on.index].copy(stateValue = this@on.state)
+            _diseases[this@on.index] = diseases[this@on.index].copy(stateValue = this@on.state)
         }
         on(ForwardChainingAction.OnAddDisease::class.java) {
-            _disease.add(ForwardChainingInputState())
+            _diseases.add(ForwardChainingInputState())
         }
         on(ForwardChainingAction.OnDeleteDisease::class.java) {
-            _disease.removeAt(this@on.index)
+            _diseases.removeAt(this@on.index)
         }
         on(ForwardChainingAction.OnSaveDisease::class.java) {
-
+            updateDisease()
         }
+    }
+
+    private fun updateDisease() = viewModelScope.launch {
+        val state = uiState.value
+        val disease = diseases.map { DiseaseBody(code = it.code, description = it.value) }
+
+        forwardChainingUpdateDiseasesUseCase.invoke(
+            systemId = state.systemId,
+            diseases = disease
+        ).onStart {
+            updateState { copy(loadingBottomBar = true) }
+        }.onEach {
+            when (it) {
+                is UiStatus.Error -> {
+                    send(ForwardChainingEffect.OnShowToast(errorMessageHandler.fromCode(it.code)))
+                    Log.e(ForwardChainingViewModel::class.simpleName, it.message)
+                }
+
+                is UiStatus.Success -> {
+                    onChangeScreen(2)
+                }
+            }
+        }.onCompletion {
+            updateState { copy(loadingBottomBar = false) }
+        }.collect()
+    }
+
+    private fun getDiseases() = viewModelScope.launch {
+        val state = uiState.value
+        forwardChainingGetDiseasesUseCase.invoke(state.systemId)
+            .onStart {
+                _diseases.clear()
+                updateState {
+                    copy(
+                        errorLoadingDiseases = null,
+                        loadingDiseases = true,
+                    )
+                }
+            }.onEach { response ->
+                when (response) {
+                    is UiStatus.Error -> updateState {
+                        copy(
+                            errorLoadingDiseases = errorMessageHandler.fromCode(
+                                response.code
+                            )
+                        )
+                    }
+
+                    is UiStatus.Success -> {
+                        val diseases = response.data
+                        if (diseases.isNullOrEmpty()) {
+                            _diseases.add(ForwardChainingInputState())
+                        } else {
+                            _diseases.addAll(diseases.map {
+                                ForwardChainingInputState(
+                                    id = it.id,
+                                    code = it.code,
+                                    value = it.description,
+                                )
+                            })
+                        }
+                    }
+                }
+            }.onCompletion {
+                updateState {
+                    copy(
+                        loadingDiseases = false,
+                        loadingSwipeDiseases = false
+                    )
+                }
+            }.collect()
     }
 
     private fun getSymptoms() = viewModelScope.launch {
@@ -135,7 +218,6 @@ class ForwardChainingViewModel @Inject constructor(
                     copy(
                         errorLoadingSymptoms = null,
                         loadingSymptoms = true,
-                        loadingSwipeSymptoms = true
                     )
                 }
             }.onEach { response ->
@@ -173,7 +255,7 @@ class ForwardChainingViewModel @Inject constructor(
             }.collect()
     }
 
-    private fun addSymptoms() = viewModelScope.launch {
+    private fun updateSymptoms() = viewModelScope.launch {
         val state = uiState.value
         val symptoms = symptoms.map { SymptomBody(code = it.code, description = it.value) }
 
@@ -189,7 +271,7 @@ class ForwardChainingViewModel @Inject constructor(
                     Log.e(ForwardChainingViewModel::class.simpleName, it.message)
                 }
 
-                is UiStatus.Success -> updateState { copy(screen = 1) }
+                is UiStatus.Success -> onChangeScreen(1)
             }
         }.onCompletion {
             updateState { copy(loadingBottomBar = false) }
@@ -197,9 +279,16 @@ class ForwardChainingViewModel @Inject constructor(
     }
 
     private fun onChangeScreen(screen: Int) = viewModelScope.launch {
+        when (screen) {
+            0 -> {
+                getSymptoms()
+            }
+
+            1 -> {
+                getDiseases()
+            }
+        }
         updateState { copy(screen = screen) }
-        if (screen == 2) updateState { copy(bottomAppBarVisible = false) }
-        else updateState { copy(bottomAppBarVisible = true) }
         updateState { copy(navigateButton = false) }
         delay(1000)
         updateState { copy(navigateButton = true) }

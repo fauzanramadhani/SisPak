@@ -1,7 +1,9 @@
 package com.ndc.sispak.data.remote.service.system.forward_chaining
 
 import com.ndc.sispak.common.BaseResponse
+import com.ndc.sispak.data.remote.body.forward_chaining.DiseaseBody
 import com.ndc.sispak.data.remote.body.forward_chaining.SymptomBody
+import com.ndc.sispak.data.remote.response.forward_chaining.DiseaseResponse
 import com.ndc.sispak.data.remote.response.forward_chaining.SymptomResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -21,8 +23,14 @@ interface ForwardChainingService {
         @Query("system_id") systemId: Int,
     ) : Response<BaseResponse<List<SymptomResponse>>>
 
+    @POST("/system/forward_chaining/update_diseases")
+    suspend fun updateDiseases(
+        @Query("system_id") systemId: Int,
+        @Body symptoms: List<DiseaseBody>
+    ): Response<BaseResponse<String>>
+
     @GET("/system/forward_chaining/diseases")
     suspend fun getDiseases(
         @Query("system_id") systemId: Int,
-    ) : Response<BaseResponse<List<SymptomResponse>>>
+    ) : Response<BaseResponse<List<DiseaseResponse>>>
 }

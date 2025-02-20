@@ -85,7 +85,7 @@ fun SetupNavHost(
                 effectFlow = viewModel.onEffect,
                 action = viewModel::invokeAction,
                 symptomList = viewModel.symptoms,
-                diseaseList = viewModel.disease
+                diseaseList = viewModel.diseases
             )
         }
     }

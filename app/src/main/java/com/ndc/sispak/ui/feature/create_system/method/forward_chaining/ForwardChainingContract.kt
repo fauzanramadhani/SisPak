@@ -34,6 +34,7 @@ sealed interface ForwardChainingAction {
     data object OnSaveSymptom : ForwardChainingAction
 
     // Update Disease Screen
+    data object OnGetDisease : ForwardChainingAction
     data class OnCodeDiseaseChange(
         val index: Int,
         val code: String
