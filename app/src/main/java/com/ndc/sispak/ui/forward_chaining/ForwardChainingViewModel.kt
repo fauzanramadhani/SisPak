@@ -1,4 +1,4 @@
-package com.ndc.sispak.ui.feature.create_system.method.forward_chaining
+package com.ndc.sispak.ui.forward_chaining
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
@@ -11,6 +11,7 @@ import com.ndc.sispak.common.UiStatus
 import com.ndc.sispak.data.remote.body.forward_chaining.DiseaseBody
 import com.ndc.sispak.data.remote.body.forward_chaining.SymptomBody
 import com.ndc.sispak.domain.ForwardChainingGetDiseasesUseCase
+import com.ndc.sispak.domain.ForwardChainingGetSymptomWithDiseaseUseCase
 import com.ndc.sispak.domain.ForwardChainingGetSymptomsUseCase
 import com.ndc.sispak.domain.ForwardChainingUpdateDiseasesUseCase
 import com.ndc.sispak.domain.ForwardChainingUpdateSymptomsUseCase
@@ -32,6 +33,7 @@ class ForwardChainingViewModel @Inject constructor(
     private val forwardChainingUpdateSymptomsUseCase: ForwardChainingUpdateSymptomsUseCase,
     private val forwardChainingGetDiseasesUseCase: ForwardChainingGetDiseasesUseCase,
     private val forwardChainingUpdateDiseasesUseCase: ForwardChainingUpdateDiseasesUseCase,
+    private val forwardChainingGetSymptomWithDiseaseUseCase: ForwardChainingGetSymptomWithDiseaseUseCase,
     private val errorMessageHandler: ErrorMessageHandler
 ) : BaseViewModel<ForwardChainingState, ForwardChainingAction, ForwardChainingEffect>(
     ForwardChainingState()
@@ -50,6 +52,7 @@ class ForwardChainingViewModel @Inject constructor(
         if (uiState.value.screen == 0) {
             getSymptoms()
         }
+        getSymptomWithDisease()
     }
 
     override fun onAction() {
@@ -96,6 +99,7 @@ class ForwardChainingViewModel @Inject constructor(
         on(ForwardChainingAction.OnSaveSymptom::class.java) {
             updateSymptoms()
         }
+
         // Disease
         on(ForwardChainingAction.OnGetDisease::class.java) {
             updateState { copy(loadingSwipeDiseases = true) }
@@ -136,6 +140,50 @@ class ForwardChainingViewModel @Inject constructor(
         on(ForwardChainingAction.OnSaveDisease::class.java) {
             updateDisease()
         }
+
+        // Update Symptom with disease
+        on(ForwardChainingAction.OnGetSymptomWithDisease::class.java) {
+            updateState { copy(loadingSwipeSymptomWithDisease = true) }
+            getSymptomWithDisease()
+        }
+    }
+
+    private fun getSymptomWithDisease() = viewModelScope.launch {
+        val state = uiState.value
+        forwardChainingGetSymptomWithDiseaseUseCase.invoke(state.systemId)
+            .onStart {
+                updateState {
+                    copy(
+                        loadingDiseases = true,
+                        errorLoadingSymptomWithDisease = null
+                    )
+                }
+            }.onEach { response ->
+                when (response) {
+                    is UiStatus.Error -> updateState {
+                        copy(
+                            errorLoadingSymptomWithDisease = errorMessageHandler.fromCode(
+                                response.code
+                            )
+                        )
+                    }
+
+                    is UiStatus.Success -> {
+                        updateState {
+                            copy(
+                                symptomWithDisease = response.data ?: emptyList()
+                            )
+                        }
+                    }
+                }
+            }.onCompletion {
+                updateState {
+                    copy(
+                        loadingSymptomWithDisease = false,
+                        loadingSwipeSymptomWithDisease = false
+                    )
+                }
+            }.collect()
     }
 
     private fun updateDisease() = viewModelScope.launch {
@@ -286,6 +334,9 @@ class ForwardChainingViewModel @Inject constructor(
 
             1 -> {
                 getDiseases()
+            }
+            2 -> {
+                getSymptomWithDisease()
             }
         }
         updateState { copy(screen = screen) }

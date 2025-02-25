@@ -1,4 +1,4 @@
-package com.ndc.sispak.ui.feature.create_system.method.forward_chaining
+package com.ndc.sispak.ui.forward_chaining
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -21,8 +21,9 @@ import com.ndc.sispak.common.MakeToast
 import com.ndc.sispak.ui.component.app_bar.BottomSecondaryAppBar
 import com.ndc.sispak.ui.component.app_bar.TopSecondaryAppBar
 import com.ndc.sispak.ui.component.textfield.TextFieldState
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.screen.UpdateDiseaseScreen
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.screen.UpdateSymptomScreen
+import com.ndc.sispak.ui.forward_chaining.screen.UpdateDiseaseScreen
+import com.ndc.sispak.ui.forward_chaining.screen.UpdateRelationScreen
+import com.ndc.sispak.ui.forward_chaining.screen.UpdateSymptomScreen
 import com.ndc.sispak.ui.navigation.NavGraph
 import kotlinx.coroutines.flow.Flow
 
@@ -166,7 +167,7 @@ fun ForwardChainingScreen(
                             navHostController.navigate(NavGraph.HomeScreen)
                         }
 
-                        else -> action(ForwardChainingAction.OnChangeScreen(state.screen-1))
+                        else -> action(ForwardChainingAction.OnChangeScreen(state.screen - 1))
                     }
                 }
             )
@@ -221,6 +222,12 @@ fun ForwardChainingScreen(
                 state = state,
                 action = action,
                 diseaseList = diseaseList
+            )
+            2 -> UpdateRelationScreen(
+                modifier = modifier,
+                paddingValues = paddingValues,
+                state = state,
+                action = action,
             )
         }
     }

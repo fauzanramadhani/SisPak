@@ -26,4 +26,8 @@ class ForwardChainingRepository @Inject constructor(
     suspend fun getDiseases(
         systemId: Int,
     ) = apiFlow { forwardChainingService.getDiseases(systemId) }
+
+    suspend fun getSymptomWithDisease(
+        systemId: Int,
+    ) = apiFlow { forwardChainingService.getSymptomWithDisease(systemId) }
 }

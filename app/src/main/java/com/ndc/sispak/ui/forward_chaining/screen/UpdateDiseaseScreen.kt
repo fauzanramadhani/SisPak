@@ -1,4 +1,4 @@
-package com.ndc.sispak.ui.feature.create_system.method.forward_chaining.screen
+package com.ndc.sispak.ui.forward_chaining.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -44,9 +44,9 @@ import com.ndc.sispak.ui.component.card.BaseCard
 import com.ndc.sispak.ui.component.card.ErrorItemCard
 import com.ndc.sispak.ui.component.shimmer.shimmerBrush
 import com.ndc.sispak.ui.component.textfield.PrimaryTextField
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingAction
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingInputState
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingState
+import com.ndc.sispak.ui.forward_chaining.ForwardChainingAction
+import com.ndc.sispak.ui.forward_chaining.ForwardChainingInputState
+import com.ndc.sispak.ui.forward_chaining.ForwardChainingState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

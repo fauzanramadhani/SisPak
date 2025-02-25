@@ -1,4 +1,4 @@
-package com.ndc.sispak.ui.feature.create_system.method.forward_chaining
+package com.ndc.sispak.ui.forward_chaining
 
 import com.ndc.sispak.ui.component.textfield.TextFieldState
 
@@ -13,22 +13,18 @@ sealed interface ForwardChainingAction {
         val index: Int,
         val code: String
     ) : ForwardChainingAction
-
     data class OnSymptomChange(
         val index: Int,
         val value: String
     ) : ForwardChainingAction
-
     data class OnCodeSymptomStateChange(
         val index: Int,
         val state: TextFieldState
     ) : ForwardChainingAction
-
     data class OnSymptomStateChange(
         val index: Int,
         val state: TextFieldState
     ) : ForwardChainingAction
-
     data object OnAddSymptom : ForwardChainingAction
     data class OnDeleteSymptom(val index: Int) : ForwardChainingAction
     data object OnSaveSymptom : ForwardChainingAction
@@ -39,25 +35,23 @@ sealed interface ForwardChainingAction {
         val index: Int,
         val code: String
     ) : ForwardChainingAction
-
     data class OnDiseaseChange(
         val index: Int,
         val value: String
     ) : ForwardChainingAction
-
     data class OnCodeDiseaseStateChange(
         val index: Int,
         val state: TextFieldState
     ) : ForwardChainingAction
-
     data class OnDiseaseStateChange(
         val index: Int,
         val state: TextFieldState
     ) : ForwardChainingAction
-
     data object OnAddDisease : ForwardChainingAction
     data class OnDeleteDisease(val index: Int) : ForwardChainingAction
     data object OnSaveDisease : ForwardChainingAction
+    // Update Symptom With Disease
+    data object OnGetSymptomWithDisease : ForwardChainingAction
 }
 
 sealed interface ForwardChainingEffect {

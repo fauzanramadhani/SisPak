@@ -10,8 +10,8 @@ import com.ndc.sispak.ui.feature.auth.AuthScreen
 import com.ndc.sispak.ui.feature.auth.AuthViewModel
 import com.ndc.sispak.ui.feature.create_system.CreateSystemScreen
 import com.ndc.sispak.ui.feature.create_system.CreateSystemViewModel
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingScreen
-import com.ndc.sispak.ui.feature.create_system.method.forward_chaining.ForwardChainingViewModel
+import com.ndc.sispak.ui.forward_chaining.ForwardChainingScreen
+import com.ndc.sispak.ui.forward_chaining.ForwardChainingViewModel
 import com.ndc.sispak.ui.feature.home.HomeScreen
 import com.ndc.sispak.ui.feature.home.HomeViewModel
 import com.ndc.sispak.ui.feature.splash.SplashScreen

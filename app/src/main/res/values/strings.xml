@@ -97,5 +97,7 @@
     <string name="code">Kode</string>
     <string name="symptom">Gejala</string>
     <string name="example_placeholder">Cth: %s</string>
+    <string name="symptom_with_disease">Relasi Gejala dan Penyakit?</string>
+    <string name="symptom_with_disease_description">Relasi gejala dan penyakit adalah hubungan di mana gejala bertindak sebagai pemicu awal untuk mengidentifikasi penyakit. Sistem pakar menggunakan gejala-gejala tersebut untuk mencocokkan aturan yang mengarah pada kesimpulan, yaitu penyakit.</string>
 
 </resources>
